@@ -9,7 +9,9 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 from meta_features import compute_meta_features, detect_problem_type
 from profiling import generate_profile
 from meta_learner import MetaLearner
+
 from compare_train_size import run_comparison
+from model_tuner import ModelTuner
 
 # Directories
 DATA_DIR = Path(__file__).parent / "data" / "raw"
@@ -47,8 +49,8 @@ if uploaded_file:
     # Inputs
     target_col = st.sidebar.selectbox("Select Target Column", df.columns)
     
-    # 3 Tabs
-    tab1, tab2, tab3 = st.tabs(["📊 Profiling", "🧠 Algorithm Prediction", "⚖️ 15% vs 85% Verification"])
+    # 4 Tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["📊 Profiling", "🧠 Algorithm Prediction", "⚖️ 15% vs 85% Verification", "⚡ Optimization & Build"])
     
     # --- PROFILING ---
     with tab1:
@@ -116,6 +118,50 @@ if uploaded_file:
                     st.warning("Model is **Sensitive** to data reduction.")
             else:
                 st.error("Verification failed.")
+
+    # --- OPTIMIZATION ---
+    with tab4:
+        st.header("Hyperparameter Tuning & Ensembling")
+        st.write("Optimize the model using **15% subsampling** and build the final `.pkl` for deployment.")
+        
+        recommended_model = st.session_state.get('recommended_model', None)
+        
+        if recommended_model:
+            st.info(f"Recommended Model to Optimize: **{recommended_model}**")
+            model_to_opt = recommended_model
+        else:
+            measure_models = ["RandomForest", "DecisionTree", "LogisticRegression", "LinearRegression", "GradientBoosting", "AdaBoost"]
+            model_to_opt = st.selectbox("Select Model to Optimize", measure_models)
+            
+        if st.button(f"🚀 Optimize & Build {model_to_opt}"):
+            problem_type = detect_problem_type(df, target_col)
+            tuner = ModelTuner(MODELS_DIR)
+            
+            with st.spinner("Tuning hyperparameters (on 15% data) & evaluating ensembles..."):
+                try:
+                    result = tuner.tune_and_build(df, target_col, problem_type, model_to_opt)
+                    
+                    if result:
+                        st.success("Optimization Complete!")
+                        
+                        st.write("### 🏆 Best Configuration")
+                        c1, c2, c3 = st.columns(3)
+                        c1.metric("Optimized Variant", result['optimized_variant'])
+                        c2.metric("Validation Score", f"{result['validation_score']:.4f}")
+                        c3.metric("Model Type", result['model_type'])
+                        
+                        st.write("### ⚙️ Best Parameters")
+                        st.json(result['best_params'])
+                        
+                        st.success(f"Final Model Saved: `{result['model_path']}`")
+                        
+                        with open(result['model_path'], "rb") as f:
+                             st.download_button("Download Model .pkl", f, file_name="best_model.pkl")
+                    else:
+                        st.error("Optimization returned no results.")
+                except Exception as e:
+                    st.error(f"Optimization failed: {e}")
+
 
 else:
     st.info("👈 Upload a CSV file to get started.")

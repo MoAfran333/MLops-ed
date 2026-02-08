@@ -10,6 +10,7 @@ from meta_features import compute_meta_features, detect_problem_type
 from meta_learner import MetaLearner
 from profiling import generate_profile
 from compare_train_size import run_comparison
+from model_tuner import ModelTuner
 
 DATA_DIR = Path(__file__).parent / "data" / "raw"
 RESULTS_DIR = Path(__file__).parent / "results"
@@ -93,6 +94,20 @@ def main():
                 print(f"  Baseline (85% train): {row['baseline_score']:.4f}")
                 print(f"  Test (15% train):     {row['small_train_score']:.4f}")
                 print(f"  Drop:                 {row['drop_percent']:.2f}%")
+
+    # 6. Hyperparameter Tuning & Build
+    if recommended_model:
+        run_tune = input(f"\n[Optimiztion] Tune & Build optimized {recommended_model} model? (y/n): ").lower().strip()
+        if run_tune == 'y':
+            tuner = ModelTuner(MODELS_DIR)
+            result = tuner.tune_and_build(df, target_col, problem_type, recommended_model)
+            
+            if result:
+                print(f"\n[Build] SUCCESS! Model saved to {result['model_path']}")
+                print(f"       Variant: {result['optimized_variant']}")
+                print(f"       Validation Score: {result['validation_score']:.4f}")
+                print(f"       Best Params: {result['best_params']}")
+
 
 
 if __name__ == "__main__":
