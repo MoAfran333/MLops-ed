@@ -7,10 +7,10 @@ import streamlit as st
 from compare_train_size import run_comparison
 
 # Add src to path
-from src.meta_features import compute_meta_features, detect_problem_type
-from src.meta_learner import MetaLearner
-from src.model_tuner import ModelTuner
-from src.profiling import generate_profile
+from meta_features import compute_meta_features, detect_problem_type
+from meta_learner import MetaLearner
+from model_tuner import ModelTuner
+from profiling import generate_profile
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 # Directories

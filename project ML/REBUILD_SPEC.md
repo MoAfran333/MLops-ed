@@ -45,7 +45,8 @@ test_small_data_impact.py (standalone, no imports from src)
 ### Required Imports (All Scripts)
 ```python
 import warnings
-warnings.filterwarnings('ignore')
+
+warnings.filterwarnings("ignore")
 
 import sys
 from pathlib import Path
@@ -58,8 +59,14 @@ from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score, roc_auc_score,
-    mean_absolute_error, mean_squared_error, r2_score
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_auc_score,
+    mean_absolute_error,
+    mean_squared_error,
+    r2_score,
 )
 from pandas.api.types import is_numeric_dtype
 ```
@@ -81,13 +88,17 @@ from pandas.api.types import is_numeric_dtype
 **Output:** Dictionary with exact keys:
 ```python
 {
-    "n_samples": int,                    # len(df)
-    "n_features": int,                   # number of feature columns (excluding target)
-    "missing_ratio": float,              # NaN count / total cells, in [0, 1]
-    "avg_variance": float or None,       # mean variance of numeric features (None if no numeric)
-    "avg_abs_correlation": float or None,# mean |correlation with target| (None if regression/no correlation)
-    "class_entropy": float or None,      # Shannon entropy of target distribution (None if regression)
-    "imbalance_ratio": float or None     # max_class_count / min_class_count (None if regression)
+    "n_samples": int,  # len(df)
+    "n_features": int,  # number of feature columns (excluding target)
+    "missing_ratio": float,  # NaN count / total cells, in [0, 1]
+    "avg_variance": float
+    or None,  # mean variance of numeric features (None if no numeric)
+    "avg_abs_correlation": float
+    or None,  # mean |correlation with target| (None if regression/no correlation)
+    "class_entropy": float
+    or None,  # Shannon entropy of target distribution (None if regression)
+    "imbalance_ratio": float
+    or None,  # max_class_count / min_class_count (None if regression)
 }
 ```
 
@@ -236,10 +247,10 @@ from pandas.api.types import is_numeric_dtype
 **Output:** List of dicts, each with keys:
 ```python
 {
-    "dataset": str,      # dataset_name
-    "model": str,        # model name (e.g., "LogisticRegression")
-    "mean_acc": float,   # cross-validation mean accuracy
-    "std_acc": float,    # cross-validation std accuracy
+    "dataset": str,  # dataset_name
+    "model": str,  # model name (e.g., "LogisticRegression")
+    "mean_acc": float,  # cross-validation mean accuracy
+    "std_acc": float,  # cross-validation std accuracy
 }
 ```
 
@@ -307,12 +318,12 @@ StratifiedKFold: n_splits=5, shuffle=True, random_state=42
 **Output:** Dict with keys:
 ```python
 {
-    "accuracy": float,         # [0, 1]
-    "precision": float,        # weighted average, [0, 1]
-    "recall": float,           # weighted average, [0, 1]
-    "f1": float,               # weighted average, [0, 1]
+    "accuracy": float,  # [0, 1]
+    "precision": float,  # weighted average, [0, 1]
+    "recall": float,  # weighted average, [0, 1]
+    "f1": float,  # weighted average, [0, 1]
     "roc_auc": float or None,  # binary only, [0, 1]
-    "composite_score": float   # mean of accuracy, precision, recall, f1
+    "composite_score": float,  # mean of accuracy, precision, recall, f1
 }
 ```
 
@@ -356,12 +367,12 @@ StratifiedKFold: n_splits=5, shuffle=True, random_state=42
 **Output:** Dict with keys:
 ```python
 {
-    "mae": float,              # mean absolute error
-    "rmse": float,             # root mean squared error
-    "r2": float,               # [0, 1] (clipped)
-    "nmae": float,             # normalized MAE, [0, 1]
-    "nrmse": float,            # normalized RMSE, [0, 1]
-    "composite_score": float   # mean of nmae, nrmse, (r2+1)/2
+    "mae": float,  # mean absolute error
+    "rmse": float,  # root mean squared error
+    "r2": float,  # [0, 1] (clipped)
+    "nmae": float,  # normalized MAE, [0, 1]
+    "nrmse": float,  # normalized RMSE, [0, 1]
+    "composite_score": float,  # mean of nmae, nrmse, (r2+1)/2
 }
 ```
 
@@ -487,7 +498,7 @@ Return: list of {dataset, model, baseline_score, small_train_score, score_drop, 
 **Task Detection:**
 ```python
 n_unique_classes = len(np.unique(y))
-is_classification = (n_unique_classes <= 20)
+is_classification = n_unique_classes <= 20
 ```
 
 **Models to Train:**
@@ -653,7 +664,7 @@ stratify = y if classification else None
 
 ```python
 # Classification
-LogisticRegression(max_iter=1000, random_state=42, solver='lbfgs')
+LogisticRegression(max_iter=1000, random_state=42, solver="lbfgs")
 DecisionTreeClassifier(max_depth=10, random_state=42)
 RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42)
 GaussianNB()
@@ -668,9 +679,9 @@ RandomForestRegressor(n_estimators=50, max_depth=10, random_state=42)
 
 ```python
 # Classification - weighted averages
-precision_score(..., average='weighted', zero_division=0)
-recall_score(..., average='weighted', zero_division=0)
-f1_score(..., average='weighted', zero_division=0)
+precision_score(..., average="weighted", zero_division=0)
+recall_score(..., average="weighted", zero_division=0)
+f1_score(..., average="weighted", zero_division=0)
 
 # Regression - normalization
 nmae = 1.0 - (mae / y_range)
@@ -695,7 +706,7 @@ except Exception as e:
 ### Level 2: Metric Calculation Errors
 ```python
 try:
-    precision = precision_score(y_true, y_pred, average='weighted', zero_division=0)
+    precision = precision_score(y_true, y_pred, average="weighted", zero_division=0)
 except:
     precision = 0.0  # default fallback
 ```
@@ -768,14 +779,14 @@ from sklearn.model_selection import train_test_split, ...
 
 # 4. Local imports (only in main scripts)
 sys.path.insert(0, str(Path(__file__).parent / "src"))
-from src.meta_features import compute_meta_features
+from meta_features import compute_meta_features
 ```
 
 ### Logging/Output
 ```python
-print("="*70)
+print("=" * 70)
 print("MAIN TITLE")
-print("="*70)
+print("=" * 70)
 print(f"\n  {key:<30} {value:.6f}")  # aligned output
 ```
 

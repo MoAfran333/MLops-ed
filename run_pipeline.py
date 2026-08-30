@@ -4,9 +4,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.baselines import run_baselines
-from src.meta_features import compute_meta_features, detect_problem_type
-from src.profiling import generate_profile
+from baselines import run_baselines
+from meta_features import compute_meta_features, detect_problem_type
+from profiling import generate_profile
 
 warnings.filterwarnings("ignore")
 

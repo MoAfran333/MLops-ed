@@ -12,6 +12,3 @@ dependencies = [
     "streamlit",
     "ydata_profiling"
 ]
-
-[tool.setuptools]
-packages = ["src"]

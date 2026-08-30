@@ -4,11 +4,11 @@ from pathlib import Path
 
 import pandas as pd
 
+from baselines import run_baselines
 from compare_train_size import run_comparison
-from src.baselines import run_baselines
-from src.meta_features import compute_meta_features, detect_problem_type
-from src.meta_learner import MetaLearner
-from src.profiling import generate_profile
+from meta_features import compute_meta_features, detect_problem_type
+from meta_learner import MetaLearner
+from profiling import generate_profile
 
 warnings.filterwarnings("ignore")
 
