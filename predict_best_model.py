@@ -5,10 +5,10 @@ from pathlib import Path
 import pandas as pd
 
 from compare_train_size import run_comparison
-from meta_features import compute_meta_features, detect_problem_type
-from meta_learner import MetaLearner
-from model_tuner import ModelTuner
-from profiling import generate_profile
+from src.meta_features import compute_meta_features, detect_problem_type
+from src.meta_learner import MetaLearner
+from src.model_tuner import ModelTuner
+from src.profiling import generate_profile
 
 warnings.filterwarnings("ignore")
 

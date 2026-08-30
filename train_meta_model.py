@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
-from meta_learner import MetaLearner
+from src.meta_learner import MetaLearner
 
 RESULTS_DIR = Path(__file__).parent / "results"
 MODELS_DIR = Path(__file__).parent / "models"

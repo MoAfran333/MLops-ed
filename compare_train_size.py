@@ -9,9 +9,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
-from baselines import prepare_data
-from evaluator import compute_classification_metrics, compute_regression_metrics
-from meta_features import detect_problem_type
+from src.baselines import prepare_data
+from src.evaluator import compute_classification_metrics, compute_regression_metrics
+from src.meta_features import detect_problem_type
 
 warnings.filterwarnings("ignore")
 
