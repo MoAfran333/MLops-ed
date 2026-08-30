@@ -23,7 +23,7 @@ def profile_dataset(
 
     return {
         "dataset_id": dataset_id,
-        "profile_path": str(profile_path),
+        "profile_url": f"/api/profile/{profile_path.name}",
     }
 
 

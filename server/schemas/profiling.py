@@ -8,5 +8,4 @@ class ProfileRequest(BaseModel):
 
 class ProfileResponse(BaseModel):
     dataset_id: str
-    profile_path: str
     profile_url: str
