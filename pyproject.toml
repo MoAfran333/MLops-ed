@@ -10,5 +10,11 @@ dependencies = [
     "pandas",
     "scikit-learn",
     "streamlit",
-    "ydata_profiling"
+    "ydata_profiling",
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+    "python-multipart>=0.0.9,<1.0",
 ]
+
+[project.scripts]
+mlops-api = "server.main:app"
