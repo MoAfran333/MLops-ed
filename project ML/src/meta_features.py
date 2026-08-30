@@ -1,13 +1,12 @@
-import math
-from typing import Optional, Dict
-
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
 
-def compute_meta_features(df: pd.DataFrame, target_col: Optional[str] = None) -> Dict[str, Optional[float]]:
-    
+def compute_meta_features(
+    df: pd.DataFrame, target_col: str | None = None
+) -> dict[str, float | None]:
+
     if not isinstance(df, pd.DataFrame):
         raise ValueError("only pandas DF is allowed !!!!!!!!!!!!!!!!!!!!!!!")
 
@@ -21,9 +20,15 @@ def compute_meta_features(df: pd.DataFrame, target_col: Optional[str] = None) ->
 
     n_features = int(len(feature_cols))
     total_cells = max(n_samples * max(n_features, 1), 1)
-    missing_ratio = float(df[feature_cols].isna().sum().sum()) / total_cells if n_features > 0 else 0.0
+    missing_ratio = (
+        float(df[feature_cols].isna().sum().sum()) / total_cells
+        if n_features > 0
+        else 0.0
+    )
     if n_features > 0:
-        numeric_features = df[feature_cols].select_dtypes(include=[np.number]).columns.tolist()
+        numeric_features = (
+            df[feature_cols].select_dtypes(include=[np.number]).columns.tolist()
+        )
     else:
         numeric_features = []
 
@@ -35,7 +40,11 @@ def compute_meta_features(df: pd.DataFrame, target_col: Optional[str] = None) ->
         variances = variances.dropna()
         avg_variance = float(variances.mean()) if not variances.empty else 0.0
     avg_abs_correlation = None
-    if target_col is not None and target_col in df.columns and len(numeric_features) > 0:
+    if (
+        target_col is not None
+        and target_col in df.columns
+        and len(numeric_features) > 0
+    ):
         target_series = df[target_col].dropna()
 
         treat_as_classification = False
@@ -53,7 +62,9 @@ def compute_meta_features(df: pd.DataFrame, target_col: Optional[str] = None) ->
         abs_corrs = []
         for col in numeric_features:
             feat = df[col]
-            paired = pd.concat([feat, pd.Series(encoded_target, index=df.index, name="_tgt")], axis=1).dropna()
+            paired = pd.concat(
+                [feat, pd.Series(encoded_target, index=df.index, name="_tgt")], axis=1
+            ).dropna()
             if paired.shape[0] <= 1:
                 continue
             corr = paired.iloc[:, 0].corr(paired["_tgt"])
@@ -75,7 +86,9 @@ def compute_meta_features(df: pd.DataFrame, target_col: Optional[str] = None) ->
             if (not is_target_numeric) or (tgt.nunique() <= 20):
                 counts = tgt.value_counts()
                 probs = counts / counts.sum()
-                class_entropy = float(-(probs * np.log2(probs)).sum()) if not probs.empty else None
+                class_entropy = (
+                    float(-(probs * np.log2(probs)).sum()) if not probs.empty else None
+                )
                 if counts.min() == 0:
                     imbalance_ratio = None
                 else:
