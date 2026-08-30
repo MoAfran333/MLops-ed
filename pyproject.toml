@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "mlops-ed"
 version = "0.1.0"
 dependencies = [
-    numpy",
+    "numpy",
     "pandas",
     "scikit-learn",
     "streamlit",
