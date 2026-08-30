@@ -1,2 +1,0 @@
-n_samples,n_features,missing_ratio,avg_variance,avg_abs_correlation,class_entropy,imbalance_ratio,dataset
-545,12,0.0,940174.6077858766,0.4450285451662605,,,Housing.csv
